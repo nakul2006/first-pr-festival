@@ -1,0 +1,39 @@
+name: Validate Spider-IDs
+
+# Deliberately NO `paths:` filter on pull_request. This repo hosts the live
+# site AND accepts contributor PRs, so a PR that touches app code (next
+# config, package.json, this very workflow) must still be checked — with a
+# path filter, that kind of PR would never trigger CI at all and could get
+# merged on trust alone.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  # Runs on every PR. Confirms the PR only adds/edits the author's own file
+  # under spider-society/ — nothing in the app itself. See scripts/check-pr-scope.mjs.
+  scope:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/check-pr-scope.mjs
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/validate.mjs

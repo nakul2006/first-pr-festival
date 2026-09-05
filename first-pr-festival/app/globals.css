@@ -1,0 +1,309 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Classic Spider-Man: suit red on suit black, web-silk for type. ──────── */
+:root {
+  color-scheme: dark;
+  --font-display: "Bebas Neue", Impact, sans-serif;
+  --font-body: "Archivo", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --red: #e62429;
+  --red-deep: #8e0912;
+  --ink: #08080a;
+  --silk: #e8e6e3;
+}
+
+html,
+body {
+  background-color: var(--ink);
+  color: var(--silk);
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* JetBrains Mono ships ligatures for "--", "->", "!=", etc. — a font ligature
+   fuses two real hyphen characters into one glyph on screen. Students typing
+   `git --version` or `git config --global` would SEE one dash while TWO real
+   characters exist underneath, then "fix" the apparent typo by adding a
+   third real hyphen, breaking the command. Disable ligatures everywhere
+   monospace text appears so what's on screen always matches what was typed. */
+.font-mono,
+input,
+textarea,
+code,
+pre {
+  font-variant-ligatures: none;
+  -webkit-font-feature-settings: "liga" 0, "calt" 0;
+  font-feature-settings: "liga" 0, "calt" 0;
+}
+
+::selection {
+  background: var(--red);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0c0c10;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--red), var(--red-deep));
+  border-radius: 99px;
+}
+
+/* ── Keyframes ───────────────────────────────────────────────────────────── */
+
+@keyframes glitch {
+  0%, 92%, 100% { transform: translate(0, 0); }
+  93% { transform: translate(-3px, 2px); }
+  94% { transform: translate(3px, -2px); }
+  95% { transform: translate(-2px, -1px); }
+  96% { transform: translate(2px, 1px); }
+}
+@keyframes glitch-top {
+  0%, 92%, 100% { clip-path: inset(0 0 100% 0); transform: translate(0, 0); }
+  93% { clip-path: inset(0 0 62% 0); transform: translate(-5px, -2px); }
+  95% { clip-path: inset(0 0 55% 0); transform: translate(5px, 2px); }
+  97% { clip-path: inset(0 0 70% 0); transform: translate(-3px, 1px); }
+}
+@keyframes glitch-bottom {
+  0%, 92%, 100% { clip-path: inset(100% 0 0 0); transform: translate(0, 0); }
+  93% { clip-path: inset(58% 0 0 0); transform: translate(5px, 2px); }
+  95% { clip-path: inset(48% 0 0 0); transform: translate(-5px, -2px); }
+  97% { clip-path: inset(66% 0 0 0); transform: translate(3px, -1px); }
+}
+
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* The chapter change reads as a swing: content arcs in from off-screen
+   right, overshooting slightly like a landing. */
+@keyframes swing-in {
+  0%   { opacity: 0; transform: translateX(110px) rotate(3.5deg); }
+  60%  { opacity: 1; transform: translateX(-14px) rotate(-1deg); }
+  100% { opacity: 1; transform: translateX(0) rotate(0deg); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Comic sound-effect lettering: punches in, hangs, drifts out. */
+@keyframes thwip {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.3) rotate(-18deg); }
+  35%  { opacity: 1; transform: translate(-50%, -50%) scale(1.12) rotate(-8deg); }
+  55%  { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(-8deg); }
+  100% { opacity: 0; transform: translate(-50%, -62%) scale(1.05) rotate(-6deg); }
+}
+
+/* Spider-sense: a red shockwave off the terminal edge on a wrong command. */
+@keyframes spider-sense {
+  0%   { opacity: 0.85; transform: scale(0.98); }
+  100% { opacity: 0; transform: scale(1.06); }
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.88) translateY(26px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* A web-shot fired across the screen on every chapter jump: the strand
+   whips across, then the whole thing fades. */
+@keyframes web-shot {
+  0%   { opacity: 0; transform: scaleX(0); }
+  18%  { opacity: 1; transform: scaleX(1); }
+  70%  { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(1); }
+}
+
+@keyframes web-splat {
+  0%   { opacity: 0; transform: scale(0.2) rotate(-25deg); }
+  40%  { opacity: 0.9; transform: scale(1.15) rotate(4deg); }
+  100% { opacity: 0; transform: scale(1.5) rotate(10deg); }
+}
+
+/* Slow drift on the background webs so the page never feels static. */
+@keyframes web-breathe {
+  0%, 100% { transform: scale(1) translate(0, 0); opacity: 0.5; }
+  50%      { transform: scale(1.035) translate(4px, -4px); opacity: 0.75; }
+}
+
+@keyframes spider-dangle {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(10px) rotate(2deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+@keyframes dimension-flash {
+  from { opacity: 0.5; }
+  to { opacity: 0; }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@layer components {
+  /* Chromatic tear, recoloured for the suit: red split against web-silk. */
+  .glitch {
+    position: relative;
+    display: inline-block;
+    animation: glitch 4s infinite steps(1, end);
+  }
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .glitch::before {
+    color: var(--red);
+    clip-path: inset(0 0 100% 0);
+    animation: glitch-top 4s infinite steps(1, end);
+  }
+  .glitch::after {
+    color: rgba(232, 230, 227, 0.85);
+    clip-path: inset(100% 0 0 0);
+    animation: glitch-bottom 4s infinite steps(1, end);
+  }
+}
+
+@layer utilities {
+  .scroll-slim::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scroll-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scroll-slim::-webkit-scrollbar-thumb {
+    background: rgba(230, 36, 41, 0.5);
+    border-radius: 99px;
+  }
+  .scroll-slim {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(230, 36, 41, 0.5) transparent;
+  }
+
+  /* Content entrances are CSS, not JS-driven tweens: a rAF-paused tab can
+     freeze a Framer entrance mid-way and leave the text invisible. These
+     always settle on the final frame. */
+  .reveal-up {
+    opacity: 0;
+    animation: reveal-up 0.45s ease-out forwards;
+  }
+  .swing-in {
+    animation: swing-in 0.62s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .fade-in {
+    animation: fade-in 0.3s ease-out forwards;
+  }
+  .animate-thwip {
+    animation: thwip 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .animate-spider-sense {
+    animation: spider-sense 0.6s ease-out forwards;
+  }
+  .pop-in {
+    animation: pop-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .animate-web-shot {
+    animation: web-shot 0.7s ease-out forwards;
+    transform-origin: left center;
+  }
+  .animate-web-splat {
+    animation: web-splat 0.85s ease-out forwards;
+  }
+  .animate-web-breathe {
+    animation: web-breathe 14s ease-in-out infinite;
+  }
+  .animate-spider-dangle {
+    animation: spider-dangle 5s ease-in-out infinite;
+  }
+  .animate-pulse-glow {
+    animation: pulse-glow 2.4s ease-in-out infinite;
+  }
+  .animate-dimension-flash {
+    animation: dimension-flash 0.5s ease-out forwards;
+  }
+  .animate-scanline {
+    animation: scanline 6s linear infinite;
+  }
+
+  .text-stroke {
+    -webkit-text-stroke: 1px rgba(232, 230, 227, 0.35);
+  }
+
+  /* Suit webbing as a repeating texture — two diagonal hatches plus a dot
+     grid read as woven fabric at low opacity. */
+  .suit-weave {
+    background-image:
+      linear-gradient(45deg, rgba(232, 230, 227, 0.06) 1px, transparent 1px),
+      linear-gradient(-45deg, rgba(232, 230, 227, 0.06) 1px, transparent 1px);
+    background-size: 14px 14px;
+  }
+  .halftone {
+    background-image: radial-gradient(rgba(232, 230, 227, 0.16) 1px, transparent 1px);
+    background-size: 9px 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch,
+  .glitch::before,
+  .glitch::after,
+  .animate-web-breathe,
+  .animate-spider-dangle,
+  .animate-pulse-glow,
+  .animate-scanline,
+  .animate-thwip,
+  .animate-spider-sense {
+    animation: none !important;
+  }
+  .reveal-up,
+  .swing-in,
+  .fade-in {
+    animation: fade-in 0.3s ease-out forwards;
+  }
+  .animate-thwip {
+    animation: thwip 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .animate-spider-sense {
+    animation: spider-sense 0.6s ease-out forwards;
+  }
+  .pop-in {
+    animation-duration: 0.01ms !important;
+    opacity: 1;
+  }
+}
+
+/* ── Print: the cheat sheet is meant to be handed out on paper. ─────────── */
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  @page {
+    margin: 14mm;
+  }
+  .print\:hidden {
+    display: none !important;
+  }
+}
